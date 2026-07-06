@@ -1,38 +1,29 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
-import { hasImagekitConfig, uploadChatMedia } from "../lib/imagekit.js";
-import { getReceiverSocketId } from "../lib/socket.js";
-
+import { hasImageKitConfig, uploadChatMedia } from "../lib/imagekit.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 export async function getUsersForSidebar(req, res) {
-    try {
-        const loggedInUserId = req.user._id;
+  try {
+    const loggedInUserId = req.user._id;
 
-       const filteredUsers = await User.find({_id: {$ne: loggedInUserId}}).select("-clerkId");
+    const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-clerkId");
 
-
-       res.status(200).json(filteredUsers);
-
-
-
-        
-    } catch (error) {
-        console.error("error in getUsersForSidebar:", error.message);
-        res.status(500).json({message:"internal derver error"});
-
-
-
-        
-    }
+    res.status(200).json(filteredUsers);
+  } catch (error) {
+    console.error("Error in getUsersForSidebar:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
-export async function getconversationsForSidebar(req,res){
-     try {
+
+export async function getConversationsForSidebar(req, res) {
+  try {
     const loggedInUserId = req.user._id;
 
     const conversations = await Message.aggregate([
-      //  Keep only the messages I sent or received.
+      // 1. Keep only the messages I sent or received.
       { $match: { $or: [{ senderId: loggedInUserId }, { receiverId: loggedInUserId }] } },
-      //  Collapse them into one row per chat partner, nothing our latest message time.
+      // 2. Collapse them into one row per chat partner, noting our latest message time.
       {
         $group: {
           // The partner is the other person on the message (not me).
@@ -40,13 +31,13 @@ export async function getconversationsForSidebar(req,res){
           lastMessageAt: { $max: "$createdAt" },
         },
       },
-      // put the most recent conversation at the top.
+      // 3. Put the most recent conversation at the top.
       { $sort: { lastMessageAt: -1 } },
-      //  Look up each partner's user profile (comes back as an array).
+      // 4. Look up each partner's user profile (comes back as an array).
       { $lookup: { from: "users", localField: "_id", foreignField: "_id", as: "user" } },
-      //  Pull that profile out of the array and make it the document.
+      // 5. Pull that profile out of the array and make it the document.
       { $replaceRoot: { newRoot: { $first: "$user" } } },
-      //  Hide the private clerkId field from the result.
+      // 6. Hide the private clerkId field from the result.
       { $project: { clerkId: 0 } },
     ]);
 
@@ -57,8 +48,8 @@ export async function getconversationsForSidebar(req,res){
   }
 }
 
-export async function getMessages(req, res){
-     try {
+export async function getMessages(req, res) {
+  try {
     const { id: userToChatId } = req.params;
     const myId = req.user._id;
 
@@ -74,9 +65,8 @@ export async function getMessages(req, res){
     console.error("Error in getMessages:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
-
-
 }
+
 export async function sendMessage(req, res) {
   try {
     const { text } = req.body;
@@ -105,12 +95,11 @@ export async function sendMessage(req, res) {
     });
 
     await newMessage.save();
-    
+
     const receiverSocketId = getReceiverSocketId(receiverId);
-    //sends message in realtime if user is online
-    if(receiverSocketId){
-      io.to(receiverSocketId).emit("newMessgae",newMessage);
-      
+    // only send the message in realtime if user is online
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
     }
 
     res.status(201).json(newMessage);
@@ -119,5 +108,3 @@ export async function sendMessage(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-
-
