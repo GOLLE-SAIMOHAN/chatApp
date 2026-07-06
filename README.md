@@ -2,7 +2,11 @@
 
 A full-stack real-time chat application inspired by iMessage. The project includes a React frontend, an Express backend, Clerk authentication, MongoDB persistence, Socket.IO messaging, ImageKit media uploads, custom themes, and wallpaper personalization.
 
-![iMessageBot preview](frontend/public/screenshot-for-readme.png)
+## Live Demo
+
+Try the deployed project here: https://imessagebot-jdke.onrender.com
+
+This live link is useful for placement and recruitment reviews because it lets recruiters quickly test the application without setting up the code locally.
 
 ## Features
 
@@ -46,30 +50,30 @@ A full-stack real-time chat application inspired by iMessage. The project includ
 
 ```text
 .
-├── backend
-│   ├── src
-│   │   ├── controllers
-│   │   ├── lib
-│   │   ├── middleware
-│   │   ├── models
-│   │   ├── routes
-│   │   ├── seeds
-│   │   ├── webhooks
-│   │   └── index.js
-│   └── package.json
-├── frontend
-│   ├── public
-│   ├── src
-│   │   ├── components
-│   │   ├── context
-│   │   ├── data
-│   │   ├── hooks
-│   │   ├── lib
-│   │   ├── pages
-│   │   ├── store
-│   │   └── App.jsx
-│   └── package.json
-└── Dockerfile
+|-- backend
+|   |-- src
+|   |   |-- controllers
+|   |   |-- lib
+|   |   |-- middleware
+|   |   |-- models
+|   |   |-- routes
+|   |   |-- seeds
+|   |   |-- webhooks
+|   |   `-- index.js
+|   `-- package.json
+|-- frontend
+|   |-- public
+|   |-- src
+|   |   |-- components
+|   |   |-- context
+|   |   |-- data
+|   |   |-- hooks
+|   |   |-- lib
+|   |   |-- pages
+|   |   |-- store
+|   |   `-- App.jsx
+|   `-- package.json
+`-- Dockerfile
 ```
 
 ## Environment Variables
@@ -178,3 +182,5 @@ npm run build
 ## Repository
 
 GitHub: https://github.com/G-saimohan/imessagebot
+
+Live Demo: https://imessagebot-jdke.onrender.com
