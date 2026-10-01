@@ -8,8 +8,9 @@ export async function getUsersForSidebar(req, res) {
     try {
         const loggedInUserId = req.user._id;
 
-       const filteredUsers = await User.find({_id: {$ne: loggedInUserId}}).select("-clerkId");
-
+       const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } })
+         .select("_id email fullName profilePic")
+         .sort({ fullName: 1 });
 
        res.status(200).json(filteredUsers);
 

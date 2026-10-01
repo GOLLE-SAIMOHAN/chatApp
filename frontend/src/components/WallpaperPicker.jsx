@@ -11,7 +11,7 @@ function WallpaperPicker() {
         value={wallpaperId}
         onChange={(event) => setWallpaperId(event.target.value)}
         aria-label="Conversation wallpaper"
-        className="max-w-[5rem] cursor-pointer bg-transparent py-2 outline-none"
+        className="max-w-[5rem] cursor-pointer bg-transparent py-2 text-foreground outline-none dark:bg-slate-900 dark:text-slate-100"
       >
         {WALLPAPERS.map((wallpaper) => (
           <option key={wallpaper.id} value={wallpaper.id}>

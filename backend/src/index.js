@@ -23,8 +23,8 @@ import {connectDB} from "./lib/db.js";
 
 
 
-const PORT = process.env.PORT;
-const FRONTEND_URL = process.env.FRONTEND_URL;
+const PORT = Number(process.env.PORT) || 3001;
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 const publicDir =path.join(process.cwd(),"public");
 
 app.use("/api/webhooks/clerk",express.raw({type:"*/*"}),clerkWebhook);

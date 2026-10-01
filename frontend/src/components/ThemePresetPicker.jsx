@@ -11,7 +11,7 @@ function ThemePresetPicker() {
         value={themePreset}
         onChange={(event) => setThemePreset(event.target.value)}
         aria-label="Theme preset"
-        className="max-w-[5rem] cursor-pointer bg-transparent py-2 outline-none"
+        className="max-w-[5rem] cursor-pointer bg-transparent py-2 text-foreground outline-none dark:bg-slate-900 dark:text-slate-100"
       >
         {HERO_UI_THEME_PRESETS.map((preset) => (
           <option key={preset.id} value={preset.id}>

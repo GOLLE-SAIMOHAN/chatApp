@@ -41,11 +41,13 @@ npm run dev
 Configure the required environment variables in the backend and expose the Clerk publishable key to the frontend:
 
 - `PORT`
-- `FRONTEND_URL`
+- `FRONTEND_URL` (defaults to `http://localhost:5173`)
 - `MONGODB_URI`
 - Clerk credentials
 - ImageKit credentials for media uploads
 - `VITE_CLERK_PUBLISHABLE_KEY`
+- `VITE_API_URL` (optional; leave empty when frontend and API share a host)
+- `VITE_DEV_API_URL` (optional local Vite proxy target; defaults to `http://localhost:3001`)
 
 ## Validation
 

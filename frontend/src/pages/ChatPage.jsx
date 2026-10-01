@@ -8,9 +8,10 @@ import WallpaperPicker from "../components/WallpaperPicker";
 import { useWallpaper } from "../context/wallpaper";
 
 const EMOJI_OPTIONS = ["😊", "😂", "❤️", "👍", "🔥", "🎉", "🤝", "✨"];
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 async function requestJson(path, options = {}) {
-  const response = await fetch(path, {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     credentials: "include",
     headers: {
       ...(options.body instanceof FormData ? {} : { "Content-Type": "application/json" }),
@@ -37,6 +38,7 @@ function ChatPage() {
   const { frameStyle } = useWallpaper();
 
   const [conversations, setConversations] = useState([]);
+  const [users, setUsers] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
@@ -76,16 +78,21 @@ function ChatPage() {
   }, [isLoaded]);
 
   useEffect(() => {
-    async function loadConversations() {
+    async function loadDirectory() {
       setLoadingConversations(true);
       setError("");
 
       try {
-        const data = await requestJson("/api/messages/conversations");
-        setConversations(data || []);
+        const [conversationData, userData] = await Promise.all([
+          requestJson("/api/messages/conversations"),
+          requestJson("/api/messages/users"),
+        ]);
+        const nextConversations = conversationData || [];
+        setConversations(nextConversations);
+        setUsers(userData || []);
 
-        if (data?.length) {
-          setActiveConversation((prev) => prev || data[0]);
+        if (nextConversations.length) {
+          setActiveConversation((prev) => prev || nextConversations[0]);
         }
       } catch (err) {
         setError(err.message);
@@ -94,7 +101,7 @@ function ChatPage() {
       }
     }
 
-    loadConversations();
+    loadDirectory();
   }, []);
 
   useEffect(() => {
@@ -120,7 +127,7 @@ function ChatPage() {
   useEffect(() => {
     if (!currentUser?._id) return undefined;
 
-    const socket = io("/", {
+    const socket = io(API_BASE_URL || "/", {
       query: { userId: currentUser._id.toString() },
       withCredentials: true,
       transports: ["websocket", "polling"],
@@ -181,16 +188,24 @@ function ChatPage() {
     };
   }, [previewUrl]);
 
+  const directory = useMemo(() => {
+    const conversationIds = new Set(conversations.map((conversation) => conversation._id?.toString()));
+    return [
+      ...conversations,
+      ...users.filter((user) => !conversationIds.has(user._id?.toString())),
+    ];
+  }, [conversations, users]);
+
   const filteredConversations = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
-    if (!query) return conversations;
+    if (!query) return directory;
 
-    return conversations.filter((conversation) => {
+    return directory.filter((conversation) => {
       const target = `${conversation.fullName || ""} ${conversation.email || ""}`.toLowerCase();
       return target.includes(query);
     });
-  }, [conversations, searchQuery]);
+  }, [directory, searchQuery]);
 
   const handleFileSelect = (event) => {
     const file = event.target.files?.[0];
@@ -294,6 +309,11 @@ function ChatPage() {
             </label>
           </div>
 
+          <div className="mb-2 flex items-center justify-between px-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-300">People</p>
+            <span className="text-xs text-slate-500 dark:text-slate-400">{filteredConversations.length}</span>
+          </div>
+
           <div className="space-y-2">
             {loadingConversations ? (
               <div className="rounded-2xl border border-dashed border-border/70 p-4 text-sm text-[#8E8E93]">
@@ -301,7 +321,7 @@ function ChatPage() {
               </div>
             ) : filteredConversations.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-border/70 p-4 text-sm text-[#8E8E93]">
-                No conversations yet.
+                No people match your search.
               </div>
             ) : (
               filteredConversations.map((conversation) => {
