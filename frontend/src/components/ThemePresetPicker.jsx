@@ -5,9 +5,14 @@ function ThemePresetPicker() {
   const { themePreset, setThemePreset } = useTheme();
 
   return (
-    <label className="sr-only">
-      Theme preset
-      <select value={themePreset} onChange={(event) => setThemePreset(event.target.value)}>
+    <label className="flex items-center rounded-xl border border-border/70 bg-background/70 px-2 text-xs font-semibold text-foreground transition hover:border-indigo-300">
+      <span className="sr-only">Theme preset</span>
+      <select
+        value={themePreset}
+        onChange={(event) => setThemePreset(event.target.value)}
+        aria-label="Theme preset"
+        className="max-w-[5rem] cursor-pointer bg-transparent py-2 outline-none"
+      >
         {HERO_UI_THEME_PRESETS.map((preset) => (
           <option key={preset.id} value={preset.id}>
             {preset.label}

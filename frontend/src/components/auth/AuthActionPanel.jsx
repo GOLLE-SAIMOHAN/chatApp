@@ -7,12 +7,12 @@ function AuthActionPanel() {
 
   return (
     <section className="flex w-full items-center justify-center bg-background/80 p-6 md:w-[44%] md:p-8">
-      <div className="w-full max-w-md rounded-[26px] border border-border/70 bg-white/80 p-6 shadow-lg backdrop-blur dark:bg-[#111214]/80">
+      <div className="w-full max-w-md rounded-[26px] border border-indigo-100/80 bg-white/85 p-6 shadow-xl shadow-indigo-950/5 backdrop-blur dark:border-indigo-400/15 dark:bg-[#111827]/85">
         <div className="mb-6 space-y-2">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#8E8E93]">Secure sign-in</p>
           <h2 className="text-2xl font-semibold text-foreground">Welcome back</h2>
           <p className="text-sm leading-6 text-[#636366] dark:text-[#98989D]">
-            Sign in to continue your private conversations or create your account in seconds.
+            Sign in to pick up where you left off, or create your personal ChatApp space in seconds.
           </p>
         </div>
 
@@ -23,7 +23,7 @@ function AuthActionPanel() {
             <button
               type="button"
               onClick={() => openSignIn({ redirectUrl: "/" })}
-              className="flex w-full items-center justify-center rounded-2xl bg-[#0A84FF] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0A66FF]"
+              className="flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-indigo-600 to-teal-500 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-950/15 transition hover:from-indigo-700 hover:to-teal-600"
             >
               Sign in
             </button>
@@ -47,7 +47,7 @@ function AuthActionPanel() {
               <UserButton afterSignOutUrl="/auth" />
             </div>
             <div className="flex items-center gap-3">
-              <a href="/" className="inline-flex items-center text-sm font-semibold text-[#0A84FF] hover:underline">
+              <a href="/" className="inline-flex items-center text-sm font-semibold text-indigo-600 hover:underline dark:text-indigo-300">
                 Open your inbox →
               </a>
               <button

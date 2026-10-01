@@ -237,8 +237,8 @@ function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(10,132,255,0.12),_transparent_30%),linear-gradient(135deg,_#f8fbff_0%,_#f2f5f9_100%)] text-foreground dark:bg-[radial-gradient(circle_at_top_left,_rgba(10,132,255,0.16),_transparent_25%),linear-gradient(135deg,_#0b0b0d_0%,_#111214_100%)]">
-      <header className="flex items-center justify-between border-b border-black/10 bg-[#F6F6F6]/95 px-3 py-2 backdrop-blur-md dark:border-white/10 dark:bg-[#1C1C1E]/95">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(99,102,241,0.14),_transparent_30%),linear-gradient(135deg,_#f8fafc_0%,_#eef2ff_100%)] text-foreground dark:bg-[radial-gradient(circle_at_top_left,_rgba(45,212,191,0.12),_transparent_25%),linear-gradient(135deg,_#0f172a_0%,_#111827_100%)]">
+      <header className="flex items-center justify-between border-b border-slate-200/80 bg-white/80 px-3 py-2 backdrop-blur-md dark:border-white/10 dark:bg-slate-900/80">
         <div className="flex items-center gap-2.5">
           <AppLogo size={32} className="rounded-[8px]" alt="" />
           <div>
@@ -255,14 +255,14 @@ function ChatPage() {
       </header>
 
       <main className="flex min-h-[calc(100vh-57px)] flex-col lg:flex-row">
-        <aside className={`w-full border-b border-black/10 bg-background/80 p-3 backdrop-blur lg:w-[340px] lg:border-b-0 lg:border-r ${isSidebarOpen ? "block" : "hidden lg:block"}`}>
-          <div className="mb-3 rounded-[20px] border border-border/70 bg-white/70 p-3 shadow-sm dark:bg-[#111214]/70">
+        <aside className={`w-full border-b border-slate-200/80 bg-white/55 p-3 backdrop-blur lg:w-[340px] lg:border-b-0 lg:border-r dark:border-white/10 dark:bg-slate-900/45 ${isSidebarOpen ? "block" : "hidden lg:block"}`}>
+          <div className="mb-3 rounded-[20px] border border-indigo-100/80 bg-white/75 p-3 shadow-sm dark:border-indigo-400/15 dark:bg-slate-900/70">
             <div className="mb-3 flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold">{clerkUser?.fullName || "Your profile"}</p>
                 <p className="text-xs text-[#8E8E93]">{clerkUser?.primaryEmailAddress?.emailAddress || "Signed in"}</p>
               </div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0A84FF] text-sm font-semibold text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-teal-500 text-sm font-semibold text-white">
                 {clerkUser?.firstName?.[0] || "U"}
               </div>
             </div>
@@ -298,10 +298,10 @@ function ChatPage() {
                     type="button"
                     onClick={() => handleSelectConversation(conversation)}
                     className={`flex w-full items-center gap-3 rounded-[18px] border px-3 py-3 text-left transition ${
-                      isActive ? "border-[#0A84FF]/30 bg-[#0A84FF]/10" : "border-transparent bg-white/70 hover:bg-black/5 dark:bg-[#111214]/70 dark:hover:bg-white/10"
+                      isActive ? "border-indigo-300/70 bg-indigo-50/90 dark:border-indigo-400/30 dark:bg-indigo-950/40" : "border-transparent bg-white/70 hover:bg-indigo-50/70 dark:bg-slate-900/70 dark:hover:bg-white/10"
                     }`}
                   >
-                    <div className="relative flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#0A84FF] to-[#7C4DFF] text-sm font-semibold text-white">
+                    <div className="relative flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-teal-500 text-sm font-semibold text-white">
                       {(conversation.fullName || "U").slice(0, 1).toUpperCase()}
                       {isOnline ? <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-emerald-500" /> : null}
                     </div>
@@ -333,7 +333,7 @@ function ChatPage() {
                   >
                     ☰
                   </button>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#0A84FF] to-[#7C4DFF] text-sm font-semibold text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-teal-500 text-sm font-semibold text-white">
                     {(activeConversation.fullName || "U").slice(0, 1).toUpperCase()}
                   </div>
                   <div>
@@ -366,7 +366,7 @@ function ChatPage() {
                       const incoming = !isOwnMessage(message);
                       return (
                         <div key={message._id || `${message.createdAt}-${message.text}`} className={`flex ${incoming ? "justify-start" : "justify-end"}`}>
-                          <div className={`max-w-[85%] rounded-[18px] px-3 py-2 text-sm shadow-sm sm:max-w-[70%] ${incoming ? "bg-white/85 text-foreground dark:bg-[#111214]/85" : "bg-[#0A84FF] text-white"}`}>
+                          <div className={`max-w-[85%] rounded-[18px] px-3 py-2 text-sm shadow-sm sm:max-w-[70%] ${incoming ? "bg-white/90 text-foreground dark:bg-slate-900/90" : "bg-gradient-to-br from-indigo-600 to-teal-500 text-white"}`}>
                             {message.text ? <p className="whitespace-pre-wrap">{message.text}</p> : null}
                             {message.image ? <img src={message.image} alt="Shared attachment" className="mt-2 max-h-48 rounded-xl object-cover" /> : null}
                             {message.video ? <video controls className="mt-2 max-h-48 rounded-xl" src={message.video} /> : null}
@@ -411,7 +411,7 @@ function ChatPage() {
                     rows={1}
                     className="max-h-32 min-h-[42px] flex-1 resize-none bg-transparent px-2 py-2 text-sm outline-none"
                   />
-                  <button type="submit" disabled={sending} className="rounded-full bg-[#0A84FF] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
+                  <button type="submit" disabled={sending} className="rounded-full bg-gradient-to-r from-indigo-600 to-teal-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:from-indigo-700 hover:to-teal-600 disabled:opacity-60">
                     {sending ? "Sending" : "Send"}
                   </button>
                 </div>
