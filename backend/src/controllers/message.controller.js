@@ -18,7 +18,7 @@ export async function getUsersForSidebar(req, res) {
         
     } catch (error) {
         console.error("error in getUsersForSidebar:", error.message);
-        res.status(500).json({message:"internal derver error"});
+        res.status(500).json({ message: "Internal server error" });
 
 
 
@@ -119,4 +119,3 @@ export async function sendMessage(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-
