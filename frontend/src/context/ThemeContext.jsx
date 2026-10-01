@@ -36,7 +36,7 @@ export function ThemeProvider({ children }) {
     applyDomTheme(theme);
   }, [theme]);
 
-  // this applies the theme preset, like sky, spotify, etc.
+  // Apply the selected accent preset before the page paints.
   useLayoutEffect(() => {
     applyThemePresetToDocument(themePreset);
   }, [themePreset]);

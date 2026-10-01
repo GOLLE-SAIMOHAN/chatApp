@@ -26,43 +26,43 @@ export const HERO_UI_THEME_PRESETS = [
   },
   {
     id: "netflix",
-    label: "Netflix",
+    label: "Ember",
     swatch:
       "radial-gradient(circle at 30% 25%, oklch(0.62 0.24 25), oklch(0.48 0.22 22) 55%, oklch(0.38 0.2 18))",
   },
   {
     id: "uber",
-    label: "Uber",
+    label: "Graphite",
     swatch:
       "radial-gradient(circle at 30% 25%, oklch(0.45 0.02 260), oklch(0.32 0.02 265) 55%, oklch(0.22 0.02 270))",
   },
   {
     id: "spotify",
-    label: "Spotify",
+    label: "Grove",
     swatch:
       "radial-gradient(circle at 30% 25%, oklch(0.78 0.22 145), oklch(0.62 0.2 145) 55%, oklch(0.48 0.18 145))",
   },
   {
     id: "coinbase",
-    label: "Coinbase",
+    label: "Ocean",
     swatch:
       "radial-gradient(circle at 30% 25%, oklch(0.58 0.2 255), oklch(0.48 0.18 260) 55%, oklch(0.42 0.16 265))",
   },
   {
     id: "airbnb",
-    label: "Airbnb",
+    label: "Coral",
     swatch:
       "radial-gradient(circle at 30% 25%, oklch(0.72 0.18 15), oklch(0.58 0.2 18) 55%, oklch(0.48 0.18 22))",
   },
   {
     id: "discord",
-    label: "Discord",
+    label: "Iris",
     swatch:
       "radial-gradient(circle at 30% 25%, oklch(0.58 0.2 275), oklch(0.48 0.18 275) 55%, oklch(0.4 0.16 275))",
   },
   {
     id: "rabbit",
-    label: "Rabbit",
+    label: "Sunlit",
     swatch:
       "radial-gradient(circle at 30% 25%, oklch(0.92 0.14 85), oklch(0.78 0.18 65) 55%, oklch(0.68 0.2 55))",
   },

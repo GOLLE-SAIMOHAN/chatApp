@@ -7,43 +7,43 @@ export const WALLPAPERS = [
   {
     id: "sonoma-horizon",
     category: "desktop",
-    label: "Sonoma Horizon",
+    label: "Horizon",
     url: "/wallpapers/sonoma-horizon.jpg",
   },
   {
     id: "redwoods",
     category: "desktop",
-    label: "Redwoods",
+    label: "Forest Trail",
     url: "/wallpapers/redwoods.jpg",
   },
   {
     id: "utah-evening",
     category: "desktop",
-    label: "Utah Evening",
+    label: "Evening Ridge",
     url: "/wallpapers/utah-evening.jpg",
   },
   {
     id: "san-francisco-bay",
     category: "desktop",
-    label: "San Francisco Bay",
+    label: "Bayline",
     url: "/wallpapers/san-francisco-bay.jpg",
   },
   {
     id: "iceland-coast",
     category: "desktop",
-    label: "Iceland Coast",
+    label: "Coastal Mist",
     url: "/wallpapers/iceland-coast.jpg",
   },
   {
     id: "new-york-midtown",
     category: "desktop",
-    label: "New York Midtown",
+    label: "City Lights",
     url: "/wallpapers/new-york-midtown.jpg",
   },
   {
     id: "macos-graphic",
     category: "abstract",
-    label: "macOS Graphic",
+    label: "Aurora Mesh",
     url: "/wallpapers/macos-graphic.jpg",
   },
   {
@@ -73,13 +73,13 @@ export const WALLPAPERS = [
   {
     id: "ventura-light",
     category: "abstract",
-    label: "Ventura",
+    label: "Soft Gradient",
     url: "/wallpapers/ventura-light.jpg",
   },
   {
     id: "ventura-dark",
     category: "abstract",
-    label: "Ventura Dark",
+    label: "Deep Gradient",
     url: "/wallpapers/ventura-dark.jpg",
   },
 ];

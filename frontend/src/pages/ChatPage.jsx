@@ -118,7 +118,10 @@ function ChatPage() {
   }, [activeConversation]);
 
   useEffect(() => {
+    if (!currentUser?._id) return undefined;
+
     const socket = io("/", {
+      query: { userId: currentUser._id.toString() },
       withCredentials: true,
       transports: ["websocket", "polling"],
       reconnection: true,
@@ -127,7 +130,7 @@ function ChatPage() {
     socketRef.current = socket;
 
     socket.on("connect", () => {
-      socket.emit("join");
+      setError("");
     });
 
     socket.on("getOnlineUsers", (users) => {
@@ -136,17 +139,23 @@ function ChatPage() {
 
     const handleIncomingMessage = (message) => {
       const active = activeConversationRef.current;
-      if (active && (message.senderId === active._id || message.receiverId === active._id)) {
+      const senderId = message.senderId?.toString();
+      const receiverId = message.receiverId?.toString();
+      const activeId = active?._id?.toString();
+      const currentUserId = currentUser._id.toString();
+
+      if (active && (senderId === activeId || receiverId === activeId)) {
         setMessages((prev) => [...prev, message]);
       }
 
       setConversations((prev) => {
-        const next = prev.filter((conversation) => conversation._id !== message.senderId && conversation._id !== message.receiverId);
+        const partnerId = senderId === currentUserId ? receiverId : senderId;
+        const next = prev.filter((conversation) => conversation._id?.toString() !== partnerId);
         return [
           {
-            _id: message.senderId === currentUser?._id ? message.receiverId : message.senderId,
-            fullName: active?.fullName || "New conversation",
-            profilePic: active?.profilePic || "",
+            _id: partnerId,
+            fullName: activeId === partnerId ? active?.fullName : "New conversation",
+            profilePic: activeId === partnerId ? active?.profilePic || "" : "",
           },
           ...next,
         ];
@@ -189,6 +198,12 @@ function ChatPage() {
 
     setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(file));
+    event.target.value = "";
+  };
+
+  const clearSelectedFile = () => {
+    setSelectedFile(null);
+    setPreviewUrl("");
   };
 
   const handleSend = async (event) => {
@@ -272,7 +287,8 @@ function ChatPage() {
               <input
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search"
+                aria-label="Search conversations"
+                placeholder="Search conversations"
                 className="w-full bg-transparent outline-none"
               />
             </label>
@@ -328,6 +344,7 @@ function ChatPage() {
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
+                    aria-label="Show conversations"
                     className="rounded-full border border-border/70 bg-white/80 p-2 text-sm lg:hidden"
                     onClick={() => setIsSidebarOpen((prev) => !prev)}
                   >
@@ -381,13 +398,20 @@ function ChatPage() {
                 )}
               </div>
 
-              {error ? <div className="mx-3 mb-2 rounded-2xl border border-amber-400/40 bg-amber-50/90 px-3 py-2 text-sm text-amber-700 dark:bg-amber-400/10 dark:text-amber-300">{error}</div> : null}
+              {error ? (
+                <div role="alert" className="mx-3 mb-2 flex items-start justify-between gap-3 rounded-2xl border border-amber-400/40 bg-amber-50/90 px-3 py-2 text-sm text-amber-700 dark:bg-amber-400/10 dark:text-amber-300">
+                  <span>{error}</span>
+                  <button type="button" onClick={() => setError("")} className="font-semibold underline underline-offset-2">
+                    Dismiss
+                  </button>
+                </div>
+              ) : null}
 
               {previewUrl ? (
                 <div className="mx-3 mb-2 rounded-[18px] border border-border/70 bg-background/80 p-3">
                   <div className="mb-2 flex items-center justify-between">
                     <p className="text-sm font-semibold">Preview</p>
-                    <button type="button" onClick={() => { setSelectedFile(null); setPreviewUrl(""); }} className="text-sm text-[#8E8E93]">
+                    <button type="button" onClick={clearSelectedFile} className="text-sm font-semibold text-indigo-600 hover:underline dark:text-indigo-300">
                       Remove
                     </button>
                   </div>
@@ -397,17 +421,18 @@ function ChatPage() {
 
               <form onSubmit={handleSend} className="border-t border-black/10 bg-background/90 p-3 backdrop-blur dark:border-white/10">
                 <div className="flex items-end gap-2 rounded-[20px] border border-border/70 bg-white/80 p-2 shadow-sm dark:bg-[#111214]/80">
-                  <button type="button" onClick={() => setShowEmojiPicker((prev) => !prev)} className="rounded-full p-2 text-xl">
+                  <button type="button" aria-label="Add emoji" onClick={() => setShowEmojiPicker((prev) => !prev)} className="rounded-full p-2 text-xl transition hover:bg-indigo-50 dark:hover:bg-indigo-950/40">
                     😊
                   </button>
-                  <button type="button" onClick={() => fileInputRef.current?.click()} className="rounded-full p-2 text-lg">
+                  <button type="button" aria-label="Attach image or video" onClick={() => fileInputRef.current?.click()} className="rounded-full p-2 text-lg transition hover:bg-indigo-50 dark:hover:bg-indigo-950/40">
                     📎
                   </button>
                   <input ref={fileInputRef} type="file" accept="image/*,video/*" className="hidden" onChange={handleFileSelect} />
                   <textarea
                     value={messageText}
                     onChange={(event) => setMessageText(event.target.value)}
-                    placeholder="Write a message"
+                    aria-label="Message"
+                    placeholder="Write a message…"
                     rows={1}
                     className="max-h-32 min-h-[42px] flex-1 resize-none bg-transparent px-2 py-2 text-sm outline-none"
                   />
@@ -438,8 +463,11 @@ function ChatPage() {
           ) : (
             <div className="flex flex-1 items-center justify-center p-6 text-center text-[#8E8E93]">
               <div className="max-w-sm rounded-[24px] border border-dashed border-border/70 bg-background/70 p-8">
-                <p className="text-lg font-semibold text-foreground">Pick a conversation</p>
-                <p className="mt-2 text-sm">Select a chat from the sidebar to view messages, attachments, and settings.</p>
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-teal-500 text-2xl text-white shadow-lg shadow-indigo-950/15">
+                  CA
+                </div>
+                <p className="text-lg font-semibold text-foreground">Your space is ready</p>
+                <p className="mt-2 text-sm">Select a conversation from the sidebar to view messages, attachments, and settings.</p>
               </div>
             </div>
           )}
