@@ -47,7 +47,7 @@ Configure the required environment variables in the backend and expose the Clerk
 - ImageKit credentials for media uploads
 - `VITE_CLERK_PUBLISHABLE_KEY`
 - `VITE_API_URL` (optional; leave empty when frontend and API share a host)
-- `VITE_DEV_API_URL` (optional local Vite proxy target; defaults to `http://localhost:3001`)
+- `VITE_DEV_API_URL` (optional local Vite proxy target; defaults to `http://localhost:3000`)
 
 ## Validation
 

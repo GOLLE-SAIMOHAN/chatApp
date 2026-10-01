@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, ".", "");
-  const apiTarget = env.VITE_DEV_API_URL || "http://localhost:3001";
+  const apiTarget = env.VITE_DEV_API_URL || "http://localhost:3000";
 
   return {
     plugins: [react(), tailwindcss(), babel({ presets: [reactCompilerPreset()] })],
