@@ -1,4 +1,3 @@
-import React from "react";
 import WallpaperPicker from "../WallpaperPicker";
 import ThemePresetPicker from "../ThemePresetPicker";
 import ThemeToggle from "../ThemeToggle";

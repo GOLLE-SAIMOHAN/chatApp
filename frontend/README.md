@@ -1,18 +1,58 @@
-# React + Vite
+# ChatApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ChatApp is a full-stack real-time messaging workspace with private conversations, media sharing, customizable themes, and responsive desktop/mobile layouts.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React, Vite, Tailwind CSS, and HeroUI
+- Express and Socket.IO
+- MongoDB with Mongoose
+- Clerk authentication
+- ImageKit media uploads
 
-## React Compiler
+## Local development
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Install dependencies in both applications:
 
-Note: This will impact Vite dev & build performances.
+```bash
+cd frontend
+npm install
+npm run dev
 
-## Expanding the ESLint configuration
+cd ../backend
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Configure the required environment variables before starting the backend:
+
+- `PORT`
+- `FRONTEND_URL`
+- `MONGODB_URI`
+- Clerk server credentials
+- ImageKit credentials when media uploads are enabled
+- `VITE_CLERK_PUBLISHABLE_KEY` for the frontend
+
+The frontend uses the backend API and Socket.IO service through the configured development proxy.
+
+## Validation
+
+```bash
+cd frontend
+npm run lint
+npm run build
+
+cd ../backend
+npm run build
+```
+
+## Docker
+
+From the repository root, build and run the production image:
+
+```bash
+docker build --build-arg VITE_CLERK_PUBLISHABLE_KEY=your_key -t chatapp .
+docker run --env-file backend/.env -p 3001:3001 chatapp
+```
+
+The Express server serves the built frontend and API from the same application.

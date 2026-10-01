@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth, useUser } from "@clerk/react";
 import { io } from "socket.io-client";
 import AppLogo, { APP_NAME } from "../components/AppLogo";
 import ThemePresetPicker from "../components/ThemePresetPicker";
 import ThemeToggle from "../components/ThemeToggle";
 import WallpaperPicker from "../components/WallpaperPicker";
-import { useTheme } from "../context/theme";
 import { useWallpaper } from "../context/wallpaper";
 
 const EMOJI_OPTIONS = ["😊", "😂", "❤️", "👍", "🔥", "🎉", "🤝", "✨"];
@@ -35,7 +34,6 @@ async function requestJson(path, options = {}) {
 function ChatPage() {
   const { isLoaded } = useAuth();
   const { user: clerkUser } = useUser();
-  const { theme, toggleTheme } = useTheme();
   const { frameStyle } = useWallpaper();
 
   const [conversations, setConversations] = useState([]);
@@ -156,7 +154,6 @@ function ChatPage() {
     };
 
     socket.on("newMessage", handleIncomingMessage);
-    socket.on("newMessgae", handleIncomingMessage);
 
     socket.on("connect_error", () => {
       setError("Realtime updates are unavailable right now.");
@@ -246,7 +243,7 @@ function ChatPage() {
           <AppLogo size={32} className="rounded-[8px]" alt="" />
           <div>
             <p className="text-[15px] font-semibold">{APP_NAME}</p>
-            <p className="text-xs text-[#8E8E93]">Private conversations</p>
+            <p className="text-xs text-[#8E8E93]">Your private space</p>
           </div>
         </div>
 

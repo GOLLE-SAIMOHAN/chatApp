@@ -1,4 +1,3 @@
-import React from "react";
 import { useAuth, useClerk, useUser, UserButton } from "@clerk/react";
 
 function AuthActionPanel() {

@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import { hasImagekitConfig, uploadChatMedia } from "../lib/imagekit.js";
-import { getReceiverSocketId } from "../lib/socket.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 
 export async function getUsersForSidebar(req, res) {
@@ -109,7 +109,7 @@ export async function sendMessage(req, res) {
     const receiverSocketId = getReceiverSocketId(receiverId);
     //sends message in realtime if user is online
     if(receiverSocketId){
-      io.to(receiverSocketId).emit("newMessgae",newMessage);
+      io.to(receiverSocketId).emit("newMessage", newMessage);
       
     }
 
@@ -119,5 +119,4 @@ export async function sendMessage(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-
 

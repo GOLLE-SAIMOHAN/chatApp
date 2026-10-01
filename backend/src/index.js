@@ -56,7 +56,7 @@ if(fs.existsSync(publicDir)){
 
 server.listen(PORT, () => {
     connectDB();
-    console.log('Server is running on port 4567',PORT);
+    console.log(`ChatApp server is running on port ${PORT}`);
 
     if (process.env.NODE_ENV === "production") {
         job.start();
